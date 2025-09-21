@@ -341,7 +341,9 @@ def main():
     if args.add is not None:
         mod_ids = args.add if args.add else read_mods(args.mods_dir)
         for mod_id in mod_ids:
-            link_mod(mod_id, args.mods_dir, args.links_dir)
+            exist_link = Path(args.links_dir).resolve() / str(mod_id)
+            if not (exist_link.exists() or exist_link.is_symlink()):
+                link_mod(mod_id, args.mods_dir, args.links_dir)
 
     if args.unlink:
         unlink_mod(args.unlink, args.links_dir)
